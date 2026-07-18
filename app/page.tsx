@@ -1,10 +1,36 @@
 import Link from 'next/link';
-import { getPosts } from '@/lib/cms';
+import type { Metadata } from 'next';
+import { BlockRenderer } from '@/components/blocks/render/BlockRenderer';
+import { getPage, listPosts } from '@/lib/sd';
 
 export const revalidate = 60;
 
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPage('home');
+  if (!page) return {};
+  return {
+    title: page.seoTitle || page.title,
+    description: page.seoDescription || page.excerpt || undefined,
+    openGraph: {
+      title: page.seoTitle || page.title,
+      description: page.seoDescription || page.excerpt || undefined,
+      images: page.ogImage ? [page.ogImage] : undefined,
+    },
+  };
+}
+
 export default async function Home() {
-  const { data: recentPosts } = await getPosts({ postType: 'blog', limit: 3 });
+  const page = await getPage('home');
+
+  if (page) {
+    return (
+      <main className="mx-auto max-w-6xl px-6 py-12">
+        <BlockRenderer content={page.content} />
+      </main>
+    );
+  }
+
+  const { data: recentPosts } = await listPosts({ limit: 3 });
 
   return (
     <main className="min-h-screen px-6">

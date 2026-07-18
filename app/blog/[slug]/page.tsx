@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getPost, getPosts } from '@/lib/cms';
+import { getPost, listPosts, isConfigured } from '@/lib/sd';
 import { BlockRenderer } from '@/components/blocks/render/BlockRenderer';
 import type { Metadata } from 'next';
 
@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const { data: posts } = await getPosts({ postType: 'blog', limit: 100 });
+  if (!isConfigured) return [];
+  const { data: posts } = await listPosts({ limit: 100 });
   return posts.map((post) => ({ slug: post.slug }));
 }
 
