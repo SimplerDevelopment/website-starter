@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getPosts } from '@/lib/cms';
+import { listPosts } from '@/lib/sd';
 import type { Metadata } from 'next';
 
 export const revalidate = 60;
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogIndex() {
-  const { data: posts } = await getPosts({ postType: 'blog' });
+  const { data: posts } = await listPosts();
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-16">

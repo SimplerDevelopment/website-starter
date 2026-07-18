@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+body {
+  font-family: var(--brand-body-font, ui-sans-serif, system-ui, sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--brand-heading-font, inherit);
+}
+
+a {
+  color: var(--brand-link-color, inherit);
+}
+
+a:hover {
+  color: var(--brand-link-hover-color, inherit);
+}
